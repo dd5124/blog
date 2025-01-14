@@ -1,1 +1,1 @@
-# market-segmentation-blog
+# Blog
