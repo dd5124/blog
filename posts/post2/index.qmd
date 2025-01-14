@@ -1,0 +1,8 @@
+---
+title: "Welcome To My Blog"
+author: "Tristan O'Malley"
+date: "2025-01-10"
+categories: [news]
+---
+
+Test

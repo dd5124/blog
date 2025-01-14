@@ -6,10 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Harlow Malloc">
+<meta name="author" content="Yeji Sohn">
 <meta name="dcterms.date" content="2025-01-13">
 
-<title>Post With Code – Blog</title>
+<title>Market Segmentation with Regression Trees in R: A Step-by-Step Guide – Blog</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -21,6 +21,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -115,9 +149,8 @@ ul.task-list li input[type="checkbox"] {
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Post With Code</h1>
+      <h1 class="title">Market Segmentation with Regression Trees in R: A Step-by-Step Guide</h1>
                                 <div class="quarto-categories">
-                <div class="quarto-category">news</div>
                 <div class="quarto-category">code</div>
                 <div class="quarto-category">analysis</div>
               </div>
@@ -130,7 +163,7 @@ ul.task-list li input[type="checkbox"] {
       <div>
       <div class="quarto-title-meta-heading">Author</div>
       <div class="quarto-title-meta-contents">
-               <p>Harlow Malloc </p>
+               <p>Yeji Sohn </p>
             </div>
     </div>
       
@@ -156,9 +189,361 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<p>This is a post with executable code.</p>
+<p>In the world of data science, one of the most powerful tools for understanding customer behavior and improving marketing strategies is market segmentation. By dividing a market into subgroups with shared characteristics, companies can optimize pricing, enhance customer satisfaction, and allocate resources effectively. In this post, we explore how to use regression trees in R for market segmentation, providing a step-by-step guide for practical application.</p>
+<section id="what-is-market-segmentation" class="level3">
+<h3 class="anchored" data-anchor-id="what-is-market-segmentation">What is Market Segmentation?</h3>
+<p>Market segmentation divides a market into distinct customer groups with similar needs, interests, and priorities, allowing businesses to tailor marketing efforts and products. This process enhances resource allocation and customer satisfaction. For example, a retailer might segment by geography, income, or behavior. In this case, we’ll use store demographics (age, income, ethnicity) to predict sales price differences with a regression tree model.</p>
+</section>
+<section id="key-concepts-to-understand" class="level3">
+<h3 class="anchored" data-anchor-id="key-concepts-to-understand">Key Concepts to Understand</h3>
+<ol type="1">
+<li><p><strong>Regression Trees</strong>: A machine learning tool that predicts continuous outcomes by splitting data based on input features.</p></li>
+<li><p><strong>CP Value</strong>: Complexity Parameter decides how deep the decision tree will be grown into. If any split does not increase the overall R2 of the model by at least cp, the tree does not split said branch any further</p></li>
+</ol>
+</section>
+<section id="sample-dataset" class="level3">
+<h3 class="anchored" data-anchor-id="sample-dataset">Sample Dataset</h3>
+<p>dataset is from: <a href="https://www.microsoft.com/en-us/research/group/alice/">Alice Project</a></p>
+<p>There are around 10,000 observations and 9 continuous and categorical variables representing user’s behaviors and characteristics.</p>
+<p>Description of varaibales are as following:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Feature Name</th>
+<th style="text-align: left;">Details</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>account_age</strong></td>
+<td style="text-align: left;">user’s account age</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>age</strong></td>
+<td style="text-align: left;">user’s age</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>avg_hours</strong></td>
+<td style="text-align: left;">the average hours user was online per week in the past</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>days_visited</strong></td>
+<td style="text-align: left;">the average number of days user visited the website per week</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>friend_count</strong></td>
+<td style="text-align: left;">number of friends of user’s account</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>has_membership</strong></td>
+<td style="text-align: left;">whether the user had membership</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>is_US</strong></td>
+<td style="text-align: left;">whether the user accesses the website from the United States</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>songs_purchased</strong></td>
+<td style="text-align: left;">the average songs user purchased per week (non-discount season)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>income</strong></td>
+<td style="text-align: left;">user’s income</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>price</strong></td>
+<td style="text-align: left;">the price user was exposed to during the discount season (baseline price * small discount)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>demand</strong></td>
+<td style="text-align: left;">songs user purchased during the discount season</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="step-by-step-guide" class="level3">
+<h3 class="anchored" data-anchor-id="step-by-step-guide">Step-by-Step Guide</h3>
+<p><strong>This guide is adapted from <a href="https://github.com/py-why/EconML/blob/main/notebooks/CustomerScenarios/Case%20Study%20-%20Customer%20Segmentation%20at%20An%20Online%20Media%20Company.ipynb">EconML</a></strong></p>
+<section id="step-1-loading-and-preparing-the-data" class="level4">
+<h4 class="anchored" data-anchor-id="step-1-loading-and-preparing-the-data">Step 1: Loading and Preparing the Data</h4>
+<p>First, we load the libraries and data, and perform some basic data cleaning.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.api <span class="im">as</span> sm</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.formula.api <span class="im">as</span> smf</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.tree <span class="im">import</span> DecisionTreeRegressor</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.tree <span class="im">import</span> plot_tree</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LinearRegression</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn <span class="im">import</span> tree</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>og_df <span class="op">=</span> pd.read_csv(<span class="st">"https://msalicedatapublic.z5.web.core.windows.net/datasets/Pricing/pricing_sample.csv"</span>)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>og_df.columns <span class="op">=</span> og_df.columns.<span class="bu">str</span>.replace(<span class="st">' '</span>, <span class="st">'_'</span>).<span class="bu">str</span>.lower()  <span class="co"># Clean column names</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="step-2-choose-number-of-segments" class="level4">
+<h4 class="anchored" data-anchor-id="step-2-choose-number-of-segments">Step 2: Choose number of segments</h4>
+<p>In this step, we use a regression tree to identify how many segments (or clusters) we want. The tree’s complexity is controlled by a hyperparameter (<code>ccp_alpha</code>), which we adjust to visualize the tree structure at different levels of complexity.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> show_tree(cp_val, data):</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    reg_tree <span class="op">=</span> DecisionTreeRegressor(ccp_alpha<span class="op">=</span>cp_val)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    reg_tree.fit(data.drop(columns<span class="op">=</span><span class="st">'demand'</span>), data[<span class="st">'demand'</span>])</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    plt.figure(figsize<span class="op">=</span>(<span class="dv">20</span>,<span class="dv">10</span>))</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    tree.plot_tree(reg_tree, filled<span class="op">=</span><span class="va">True</span>, feature_names<span class="op">=</span>data.drop(columns<span class="op">=</span><span class="st">'demand'</span>).columns)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    plt.show()</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>pricing_df <span class="op">=</span> og_df.copy()</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co"># exclude variable of intersts for segmentation</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>reg_tree_data <span class="op">=</span> pricing_df.drop(columns<span class="op">=</span>[<span class="st">'price'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>show_tree(<span class="dv">5</span>, reg_tree_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../../results/img/tree_cp5.png" class="img-fluid figure-img"></p>
+<figcaption>Tree5</figcaption>
+</figure>
+</div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>show_tree(<span class="dv">1</span>, reg_tree_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../../results/img/tree_cp1.png" class="img-fluid figure-img"></p>
+<figcaption>Tree1</figcaption>
+</figure>
+</div>
+<p>We want 4 segments, so we will proceed with cp value of 1.</p>
+</section>
+<section id="step-3-building-the-regression-tree" class="level4">
+<h4 class="anchored" data-anchor-id="step-3-building-the-regression-tree">Step 3: Building the Regression Tree</h4>
+<p>In this step, we build the actual regression tree model, training it on the user characteristics to predict the demand.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>cp_val <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>reg_tree <span class="op">=</span> DecisionTreeRegressor(ccp_alpha<span class="op">=</span>cp_val)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>reg_tree.fit(reg_tree_data.drop(columns<span class="op">=</span><span class="st">'demand'</span>), reg_tree_data[<span class="st">'demand'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>By fitting the model, we are able to identify the relationships between the various user characteristics and demand, and the tree automatically creates splits (segments) based on these variables.</p>
+</section>
+<section id="step-4-assigning-stores-to-leaves" class="level4">
+<h4 class="anchored" data-anchor-id="step-4-assigning-stores-to-leaves">Step 4: Assigning Stores to Leaves</h4>
+<p>Next, we assign each user to a regression tree leaf:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>pricing_df[<span class="st">'leaf'</span>] <span class="op">=</span> reg_tree.<span class="bu">apply</span>(reg_tree_data.drop(columns<span class="op">=</span><span class="st">'demand'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This step adds a new variable <code>leaf</code> to the dataset, which indicates the leaf (or segment) that each user belongs to.</p>
+</section>
+<section id="step-5-interpreting-the-results" class="level4">
+<h4 class="anchored" data-anchor-id="step-5-interpreting-the-results">Step 5: Interpreting the Results</h4>
+<p>At this point, we have successfully segmented the users based on their characteristics. Each user is now assigned to a segment (leaf) that represents a group of stores with similar characteristics.</p>
+<p>To calculate price elasticities for each segment, do the following:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>pricing_df[<span class="st">'log_price'</span>] <span class="op">=</span> np.log(pricing_df[<span class="st">'price'</span>])</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>pricing_df[<span class="st">'log_q'</span>] <span class="op">=</span> np.log(pricing_df[<span class="st">'demand'</span>])</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> []</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Elasticity function</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> own_price_reg(leaf_num):</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    df  <span class="op">=</span> pricing_df[pricing_df[<span class="st">'leaf'</span>] <span class="op">==</span> leaf_num]</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    model <span class="op">=</span> smf.ols(<span class="st">'log_q ~ log_price'</span>, data<span class="op">=</span>df).fit()</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> model.params[<span class="st">'log_price'</span>]</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> leaf <span class="kw">in</span> pricing_df[<span class="st">'leaf'</span>].unique():</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    own_price <span class="op">=</span> own_price_reg(leaf)</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    leaf_data <span class="op">=</span> pricing_df[pricing_df[<span class="st">'leaf'</span>] <span class="op">==</span> leaf]</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    avg_values <span class="op">=</span> leaf_data.drop(columns<span class="op">=</span>[<span class="st">'leaf'</span>]).mean().to_dict()</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Add the result to the data list</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    avg_values[<span class="st">'leaf'</span>] <span class="op">=</span> leaf</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    avg_values[<span class="st">'own_price_reg'</span>] <span class="op">=</span> own_price</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    data.append(avg_values)</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>pd.DataFrame(data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Both price and demand are transformed by log. This allows the coefficients to represent elasticity (the percentage change in demand for a percentage change in price).</p>
+<div class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> Markdown</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tabulate <span class="im">import</span> tabulate</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> pd.read_csv(<span class="st">"../../results/tbl/elasticity.csv"</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>Markdown(results.to_markdown(index <span class="op">=</span> <span class="va">False</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="tbl-results" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="1">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-results-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: Average features and elasticity by segmentation
+</figcaption>
+<div aria-describedby="tbl-results-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="5">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 4%">
+<col style="width: 7%">
+<col style="width: 4%">
+<col style="width: 6%">
+<col style="width: 7%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 4%">
+<col style="width: 9%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 6%">
+<col style="width: 4%">
+<col style="width: 3%">
+<col style="width: 8%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;">index</th>
+<th style="text-align: right;">account_age</th>
+<th style="text-align: right;">age</th>
+<th style="text-align: right;">avg_hours</th>
+<th style="text-align: right;">days_visited</th>
+<th style="text-align: right;">friends_count</th>
+<th style="text-align: right;">has_membership</th>
+<th style="text-align: right;">is_us</th>
+<th style="text-align: right;">songs_purchased</th>
+<th style="text-align: right;">income</th>
+<th style="text-align: right;">price</th>
+<th style="text-align: right;">demand</th>
+<th style="text-align: right;">log_price</th>
+<th style="text-align: right;">log_q</th>
+<th style="text-align: right;">leaf</th>
+<th style="text-align: right;">own_price_reg</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">3.01726</td>
+<td style="text-align: right;">38.9238</td>
+<td style="text-align: right;">5.07327</td>
+<td style="text-align: right;">1.94948</td>
+<td style="text-align: right;">10.0314</td>
+<td style="text-align: right;">0.49294</td>
+<td style="text-align: right;">0.800439</td>
+<td style="text-align: right;">5.10132</td>
+<td style="text-align: right;">0.697376</td>
+<td style="text-align: right;">0.867587</td>
+<td style="text-align: right;">7.78766</td>
+<td style="text-align: right;">-0.145771</td>
+<td style="text-align: right;">2.02731</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">-2.14204</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2.97933</td>
+<td style="text-align: right;">39.4955</td>
+<td style="text-align: right;">5.05556</td>
+<td style="text-align: right;">5.99788</td>
+<td style="text-align: right;">9.97509</td>
+<td style="text-align: right;">0.514043</td>
+<td style="text-align: right;">0.786963</td>
+<td style="text-align: right;">4.98314</td>
+<td style="text-align: right;">0.702922</td>
+<td style="text-align: right;">0.869104</td>
+<td style="text-align: right;">12.753</td>
+<td style="text-align: right;">-0.144278</td>
+<td style="text-align: right;">2.53648</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">-1.27903</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">2.99316</td>
+<td style="text-align: right;">38.5003</td>
+<td style="text-align: right;">4.97012</td>
+<td style="text-align: right;">6.00526</td>
+<td style="text-align: right;">10.07</td>
+<td style="text-align: right;">0.50868</td>
+<td style="text-align: right;">0.793793</td>
+<td style="text-align: right;">5.14311</td>
+<td style="text-align: right;">1.5587</td>
+<td style="text-align: right;">0.958127</td>
+<td style="text-align: right;">24.6107</td>
+<td style="text-align: right;">-0.0454373</td>
+<td style="text-align: right;">3.20234</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">-0.112743</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">3.01388</td>
+<td style="text-align: right;">38.797</td>
+<td style="text-align: right;">4.93473</td>
+<td style="text-align: right;">2.01388</td>
+<td style="text-align: right;">10.0212</td>
+<td style="text-align: right;">0.488926</td>
+<td style="text-align: right;">0.807273</td>
+<td style="text-align: right;">4.9841</td>
+<td style="text-align: right;">1.57671</td>
+<td style="text-align: right;">0.958446</td>
+<td style="text-align: right;">19.592</td>
+<td style="text-align: right;">-0.0450707</td>
+<td style="text-align: right;">2.9738</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">-0.1203</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p><strong>Group 2:</strong></p>
+<ul>
+<li><strong>Price Elasticity (-2.14):</strong> Highly elastic, meaning demand is sensitive to price changes. A small price increase could significantly reduce demand.</li>
+<li><strong>Average Income (0.70):</strong> Relatively low compared to other groups, suggesting higher price sensitivity (income effect).</li>
+<li><strong>Average Days Visited (1.95):</strong> Low platform engagement, possibly contributing to higher elasticity as these users might not be habitual buyers.</li>
+<li><strong>Interpretation:</strong> Price adjustments could significantly impact demand in this group, requiring careful consideration of pricing strategies.</li>
+</ul>
+<p><strong>Group 3:</strong></p>
+<ul>
+<li><strong>Price Elasticity (-1.28):</strong> Moderately elastic, indicating that users are still responsive to price changes, but less so than Group 0.</li>
+<li><strong>Average Income (0.70):</strong> Similar to Group 2, maintaining moderate price sensitivity.</li>
+<li><strong>Average Days Visited (5.99):</strong> Higher engagement than Group 0, which could reduce elasticity as these users are more invested in the platform.</li>
+<li><strong>Interpretation:</strong> This group may respond to price changes, but their higher engagement suggests potential for retention despite price increases.</li>
+</ul>
+<p><strong>Group 6:</strong></p>
+<ul>
+<li><strong>Price Elasticity (-0.11):</strong> Nearly inelastic, indicating demand is relatively insensitive to price changes.</li>
+<li><strong>Income (1.56):</strong> Higher than the other groups, likely contributing to lower price sensitivity.</li>
+<li><strong>Average Days Visited (6.01):</strong> Highest engagement, which could reduce elasticity as these users are more invested in the platform. highly.</li>
+<li><strong>Interpretation:</strong> This group can tolerate higher prices without significant reductions in demand, making them ideal for premium offerings.</li>
+</ul>
+<p><strong>Group 5:</strong></p>
+<ul>
+<li><strong>Price Elasticity (-0.12):</strong> Nearly inelastic, similar to Group 6.</li>
+<li><strong>Income (1.58):</strong> Comparable to Group 6, supporting lower price sensitivity.</li>
+<li><strong>Average Days Visited (2.01):</strong> Despite low platform engagement, demand (19.59) remains high, indicating users in this group value the product highly.</li>
+<li><strong>Interpretation:</strong> Like Group 6, this group is less price-sensitive and may represent another target for premium pricing or tailored offers.</li>
+</ul>
+<p><strong>Recommendation:</strong> 1. High Elasticity Groups (2 and 3): - These groups are more price-sensitive due to lower income, engagement, or both. - Price reductions or promotions may drive significant demand increases.</p>
+<ol start="2" type="1">
+<li>Low Elasticity Groups (6 and 5):
+<ul>
+<li>These groups show low sensitivity to price changes, likely due to higher income and inherent demand.</li>
+<li>They are suitable candidates for price increases or premium-tier products.</li>
+</ul></li>
+</ol>
+<p>By understanding these nuances, pricing and marketing strategies can be tailored to maximize revenue while maintaining user satisfaction.</p>
+</section>
+</section>
+<section id="real-world-applications" class="level3">
+<h3 class="anchored" data-anchor-id="real-world-applications">Real-World Applications</h3>
+<p>Market segmentation using regression trees can be applied to a variety of industries. Here are a few examples:</p>
+<ul>
+<li><p><strong>Retail</strong>: Optimize promotions and product offerings based on customer demographics.</p></li>
+<li><p><strong>Healthcare</strong>: Segment patients to tailor treatment plans.</p></li>
+<li><p><strong>Finance</strong>: Offer personalized financial products based on income and behavior.</p></li>
+</ul>
+</section>
+<section id="conclusion" class="level3">
+<h3 class="anchored" data-anchor-id="conclusion">Conclusion</h3>
+<p>In this blog post, we demonstrated how to segment a market using regression trees in R. By using regression trees for segmentation, you can uncover actionable insights to drive strategy and decision-making. Whether refining pricing strategies or identifying customer needs, these tools offer a robust way to make the most of your data.</p>
+<p>Key takeaways include: - <strong>Market segmentation</strong> is essential for understanding and targeting specific customer groups. - <strong>Regression trees</strong> are an effective tool for predicting continuous outcomes based on various independent variables. - By segmenting stores based on their demographics, retailers can optimize pricing and improve sales strategies.</p>
+<p>If you’re interested in diving deeper into regression trees or market segmentation, try applying these techniques to your own datasets and explore how different groups behave differently in your industry.</p>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

@@ -1,5 +1,5 @@
 ---
-title: "Market Segmentation with Regression Trees in R: A Step-by-Step Guide"
+title: "A Slice of Data"
 listing:
   contents: posts
   sort: "date desc"
@@ -10,5 +10,3 @@ listing:
 page-layout: full
 title-block-banner: true
 ---
-
-**Market Segmentation with Regression Trees in R: A Step-by-Step Guide**

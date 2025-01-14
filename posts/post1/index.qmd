@@ -1,0 +1,219 @@
+---
+title: "Market Segmentation with Regression Trees in Python: A Step-by-Step Guide"
+author: "Yeji Sohn"
+date: "2025-01-13"
+categories: [code, analysis]
+image: "image.jpg"
+---
+
+In the world of data science, one of the most powerful tools for understanding customer behavior and improving marketing strategies is market segmentation. By dividing a market into subgroups with shared characteristics, companies can optimize pricing, enhance customer satisfaction, and allocate resources effectively. In this post, we explore how to use regression trees in R for market segmentation, providing a step-by-step guide for practical application.
+
+### What is Market Segmentation?
+
+Market segmentation divides a market into distinct customer groups with similar needs, interests, and priorities, allowing businesses to tailor marketing efforts and products. This process enhances resource allocation and customer satisfaction. For example, a retailer might segment by geography, income, or behavior. In this case, we'll use store demographics (age, income, ethnicity) to predict sales price differences with a regression tree model.
+
+### Key Concepts to Understand
+
+1. **Regression Trees**: A machine learning tool that predicts continuous outcomes by splitting data based on input features.
+
+2. **CP Value**: Complexity Parameter decides how deep the decision tree will be grown into. If any split does not increase the overall R2 of the model by at least cp, the tree does not split said branch any further
+
+### Sample Dataset
+
+dataset is from: [Alice Project](https://www.microsoft.com/en-us/research/group/alice/)
+
+There are around 10,000 observations and 9 continuous and categorical variables representing user's behaviors and characteristics. 
+
+Description of varaibales are as following: 
+
+| Feature Name     | Details                                                   |
+|:--- |:---|
+| **account_age**  | user's account age                                        |
+| **age**          | user's age                                                |
+| **avg_hours**    | the average hours user was online per week in the past    |
+| **days_visited** | the average number of days user visited the website per week |
+| **friend_count** | number of friends of user's account                       |
+| **has_membership**| whether the user had membership                          |
+| **is_US**        | whether the user accesses the website from the United States |
+| **songs_purchased**| the average songs user purchased per week (non-discount season) |
+| **income**       | user's income                                             |
+| **price**        | the price user was exposed to during the discount season (baseline price * small discount) |
+| **demand**       | songs user purchased during the discount season          |
+
+### Step-by-Step Guide
+
+**This guide is adapted from [EconML](https://github.com/py-why/EconML/blob/main/notebooks/CustomerScenarios/Case%20Study%20-%20Customer%20Segmentation%20at%20An%20Online%20Media%20Company.ipynb)**
+
+#### Step 1: Loading and Preparing the Data
+
+First, we load the libraries and data, and perform some basic data cleaning.
+
+```python
+import pandas as pd
+import numpy as np
+import statsmodels.api as sm
+import statsmodels.formula.api as smf
+from sklearn.tree import DecisionTreeRegressor
+import matplotlib.pyplot as plt
+from sklearn.tree import plot_tree
+from sklearn.linear_model import LinearRegression
+from sklearn import tree
+
+og_df = pd.read_csv("https://msalicedatapublic.z5.web.core.windows.net/datasets/Pricing/pricing_sample.csv")
+og_df.columns = og_df.columns.str.replace(' ', '_').str.lower()  # Clean column names
+```
+
+#### Step 2: Choose number of segments
+
+In this step, we use a regression tree to identify how many segments (or clusters) we want. 
+The tree's complexity is controlled by a hyperparameter (`ccp_alpha`), which we adjust to visualize the tree structure at different levels of complexity.
+
+```python
+def show_tree(cp_val, data):
+    reg_tree = DecisionTreeRegressor(ccp_alpha=cp_val)
+    reg_tree.fit(data.drop(columns='demand'), data['demand'])
+
+    plt.figure(figsize=(20,10))
+    tree.plot_tree(reg_tree, filled=True, feature_names=data.drop(columns='demand').columns)
+    plt.show()
+
+pricing_df = og_df.copy()
+
+# exclude variable of intersts for segmentation
+reg_tree_data = pricing_df.drop(columns=['price'])
+```
+
+```python
+show_tree(5, reg_tree_data)
+```
+![Tree5](../../results/img/tree_cp5.png)
+
+```python
+show_tree(1, reg_tree_data)
+```
+![Tree1](../../results/img/tree_cp1.png)
+
+We want 4 segments, so we will proceed with cp value of 1.
+
+#### Step 3: Building the Regression Tree
+
+In this step, we build the actual regression tree model, training it on the user characteristics to predict the demand.
+
+```python
+cp_val = 1
+reg_tree = DecisionTreeRegressor(ccp_alpha=cp_val)
+reg_tree.fit(reg_tree_data.drop(columns='demand'), reg_tree_data['demand'])
+```
+By fitting the model, we are able to identify the relationships between the various user characteristics and demand, and the tree automatically creates splits (segments) based on these variables.
+
+#### Step 4: Assigning Stores to Leaves
+
+Next, we assign each user to a regression tree leaf:
+
+```python
+pricing_df['leaf'] = reg_tree.apply(reg_tree_data.drop(columns='demand'))
+```
+This step adds a new variable `leaf` to the dataset, which indicates the leaf (or segment) that each user belongs to.
+
+#### Step 5: Interpreting the Results
+
+At this point, we have successfully segmented the users based on their characteristics. Each user is now assigned to a segment (leaf) that represents a group of stores with similar characteristics.
+
+To calculate price elasticities for each segment, do the following:
+```python
+pricing_df['log_price'] = np.log(pricing_df['price'])
+pricing_df['log_q'] = np.log(pricing_df['demand'])
+data = []
+
+# Elasticity function
+def own_price_reg(leaf_num):
+    df  = pricing_df[pricing_df['leaf'] == leaf_num]
+    model = smf.ols('log_q ~ log_price', data=df).fit()
+    return model.params['log_price']
+
+for leaf in pricing_df['leaf'].unique():
+    own_price = own_price_reg(leaf)
+    leaf_data = pricing_df[pricing_df['leaf'] == leaf]
+    avg_values = leaf_data.drop(columns=['leaf']).mean().to_dict()
+    
+    # Add the result to the data list
+    avg_values['leaf'] = leaf
+    avg_values['own_price_reg'] = own_price
+    data.append(avg_values)
+
+pd.DataFrame(data)
+```
+
+Both price and demand are transformed by log.
+This allows the coefficients to represent elasticity (the percentage change in demand for a percentage change in price).
+
+```{python}
+#| label: tbl-results
+#| tbl-cap: "Average features and elasticity by segmentation"
+import pandas as pd
+from IPython.display import Markdown
+from tabulate import tabulate
+results = pd.read_csv("../../results/tbl/elasticity.csv")
+
+Markdown(results.to_markdown(index = False))
+```
+
+**Group 2:**
+
+* **Price Elasticity (-2.14):** Highly elastic, meaning demand is sensitive to price changes. A small price increase could significantly reduce demand.
+* **Average Income (0.70):** Relatively low compared to other groups, suggesting higher price sensitivity (income effect).
+* **Average Days Visited (1.95):** Low platform engagement, possibly contributing to higher elasticity as these users might not be habitual buyers.
+* **Interpretation:** Price adjustments could significantly impact demand in this group, requiring careful consideration of pricing strategies.
+
+**Group 3:**
+
+* **Price Elasticity (-1.28):** Moderately elastic, indicating that users are still responsive to price changes, but less so than Group 0.
+* **Average Income (0.70):** Similar to Group 2, maintaining moderate price sensitivity.
+* **Average Days Visited (5.99):** Higher engagement than Group 0, which could reduce elasticity as these users are more invested in the platform.
+* **Interpretation:** This group may respond to price changes, but their higher engagement suggests potential for retention despite price increases.
+
+**Group 6:**
+
+* **Price Elasticity (-0.11):** Nearly inelastic, indicating demand is relatively insensitive to price changes.
+* **Income (1.56):** Higher than the other groups, likely contributing to lower price sensitivity.
+* **Average Days Visited (6.01):** Highest engagement, which could reduce elasticity as these users are more invested in the platform. highly.
+* **Interpretation:** This group can tolerate higher prices without significant reductions in demand, making them ideal for premium offerings.
+
+**Group 5:**
+
+* **Price Elasticity (-0.12):** Nearly inelastic, similar to Group 6.
+* **Income (1.58):** Comparable to Group 6, supporting lower price sensitivity.
+* **Average Days Visited (2.01):** Despite low platform engagement, demand (19.59) remains high, indicating users in this group value the product highly.
+* **Interpretation:** Like Group 6, this group is less price-sensitive and may represent another target for premium pricing or tailored offers.
+
+**Recommendation:**
+1. High Elasticity Groups (2 and 3):
+   - These groups are more price-sensitive due to lower income, engagement, or both.
+   - Price reductions or promotions may drive significant demand increases.
+
+2. Low Elasticity Groups (6 and 5):
+   - These groups show low sensitivity to price changes, likely due to higher income and inherent demand.
+   - They are suitable candidates for price increases or premium-tier products.
+
+By understanding these nuances, pricing and marketing strategies can be tailored to maximize revenue while maintaining user satisfaction.
+
+### Real-World Applications
+
+Market segmentation using regression trees can be applied to a variety of industries. Here are a few examples:
+
+- **Retail**: Optimize promotions and product offerings based on customer demographics.
+
+- **Healthcare**: Segment patients to tailor treatment plans.
+
+- **Finance**: Offer personalized financial products based on income and behavior.
+
+### Conclusion
+
+In this blog post, we demonstrated how to segment a market using regression trees in R. By using regression trees for segmentation, you can uncover actionable insights to drive strategy and decision-making. Whether refining pricing strategies or identifying customer needs, these tools offer a robust way to make the most of your data.
+
+Key takeaways include:
+- **Market segmentation** is essential for understanding and targeting specific customer groups.
+- **Regression trees** are an effective tool for predicting continuous outcomes based on various independent variables.
+- By segmenting stores based on their demographics, retailers can optimize pricing and improve sales strategies.
+
+If you're interested in diving deeper into regression trees or market segmentation, try applying these techniques to your own datasets and explore how different groups behave differently in your industry.
