@@ -42,7 +42,7 @@ Description of varaibales are as following:
 
 ### Step-by-Step Guide
 
-**This guide is adapted from [EconML](https://github.com/py-why/EconML/blob/main/notebooks/CustomerScenarios/Case%20Study%20-%20Customer%20Segmentation%20at%20An%20Online%20Media%20Company.ipynb)**
+**This guide is adapted from [@econml]**
 
 #### Step 1: Loading and Preparing the Data
 
@@ -217,3 +217,8 @@ Key takeaways include:
 - By segmenting stores based on their demographics, retailers can optimize pricing and improve sales strategies.
 
 If you're interested in diving deeper into regression trees or market segmentation, try applying these techniques to your own datasets and explore how different groups behave differently in your industry.
+
+For segmentation using different classification models, refer to [@Franciscojarceo].
+
+---
+# References
