@@ -56,7 +56,27 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -267,7 +287,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="step-by-step-guide" class="level3">
 <h3 class="anchored" data-anchor-id="step-by-step-guide">Step-by-Step Guide</h3>
-<p><strong>This guide is adapted from <span class="citation" data-cites="econml">[@econml]</span></strong></p>
+<p><strong>This guide is adapted from <span class="citation" data-cites="econml">(<a href="#ref-econml" role="doc-biblioref">Keith Battocchi 2019</a>)</span></strong></p>
 <section id="step-1-loading-and-preparing-the-data" class="level4">
 <h4 class="anchored" data-anchor-id="step-1-loading-and-preparing-the-data">Step 1: Loading and Preparing the Data</h4>
 <p>First, we load the libraries and data, and perform some basic data cleaning.</p>
@@ -541,16 +561,24 @@ Table&nbsp;1: Average features and elasticity by segmentation
 <p>In this blog post, we demonstrated how to segment a market using regression trees in R. By using regression trees for segmentation, you can uncover actionable insights to drive strategy and decision-making. Whether refining pricing strategies or identifying customer needs, these tools offer a robust way to make the most of your data.</p>
 <p>Key takeaways include: - <strong>Market segmentation</strong> is essential for understanding and targeting specific customer groups. - <strong>Regression trees</strong> are an effective tool for predicting continuous outcomes based on various independent variables. - By segmenting stores based on their demographics, retailers can optimize pricing and improve sales strategies.</p>
 <p>If you’re interested in diving deeper into regression trees or market segmentation, try applying these techniques to your own datasets and explore how different groups behave differently in your industry.</p>
-<p>For segmentation using different classification models, refer to <span class="citation" data-cites="Franciscojarceo">[@Franciscojarceo]</span>.</p>
+<p>For segmentation using different classification models, refer to <span class="citation" data-cites="Franciscojarceo">(<a href="#ref-Franciscojarceo" role="doc-biblioref">Franciscojarceo, n.d.</a>)</span>.</p>
 <hr>
 </section>
 <section id="references" class="level1">
-<h1>References</h1>
+
+
 
 
 </section>
 
-</main> <!-- /main -->
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-Franciscojarceo" class="csl-entry" role="listitem">
+Franciscojarceo. n.d. <span>“Customer Segmentation Using Data Science.”</span> <em>Francisco’s Random Thoughts</em>. <a href="https://franciscojavierarceo.github.io/post/customer-segmentation-data-science">https://franciscojavierarceo.github.io/post/customer-segmentation-data-science</a>.
+</div>
+<div id="ref-econml" class="csl-entry" role="listitem">
+Keith Battocchi, Maggie Hei, Eleanor Dillon. 2019. <span>“<span>EconML</span>: <span class="nocase">A Python Package for ML-Based Heterogeneous Treatment Effects Estimation</span>.”</span> https://github.com/py-why/EconML.
+</div>
+</div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

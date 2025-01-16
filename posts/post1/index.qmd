@@ -4,6 +4,7 @@ author: "Yeji Sohn"
 date: "2025-01-13"
 categories: [code, analysis]
 image: "image.jpg"
+bibliography: references.bib
 ---
 
 In the world of data science, one of the most powerful tools for understanding customer behavior and improving marketing strategies is market segmentation. By dividing a market into subgroups with shared characteristics, companies can optimize pricing, enhance customer satisfaction, and allocate resources effectively. In this post, we explore how to use regression trees in R for market segmentation, providing a step-by-step guide for practical application.

@@ -22,7 +22,27 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -200,8 +220,8 @@ window.Quarto = {
 <p>Here, <span class="math inline">\(p_i\)</span> is the probability of success (e.g., having heart disease), and <span class="math inline">\(1-p_i\)</span> is the probability of failure.<br>
 <span class="math inline">\(X_1, X_2, \dots, X_k\)</span> are the independent variables (like age or cholesterol level).<br>
 The <span class="math inline">\(\beta\)</span> values are coefficients determined using a method called <strong>maximum likelihood estimation (MLE)</strong>.</p>
-<p>A <strong>probability less than 0.5</strong> predicts the outcome as 0 (False), while a <strong>probability greater than 0.5</strong> predicts it as 1 (True).<br>
-For example, if <span class="math inline">\(\beta_1 = 0.8\)</span>, it means that for every 1-unit increase in <span class="math inline">\(X_1\)</span>, the odds of success increase by <span class="math inline">\(e^{0.8} \approx 2.22\)</span>—a 122% increase!</p>
+<p>A <strong>probability less than 0.5</strong> predicts the outcome as 0 (False), while a <strong>probability greater than 0.5</strong> predicts it as 1 (True). For example, if <span class="math inline">\(\beta_1 = 0.8\)</span>, it means that for every 1-unit increase in <span class="math inline">\(X_1\)</span>, the odds of success increase by <span class="math inline">\(e^{0.8} \approx 2.22\)</span>—a 122% increase!</p>
+<p>For more information, <span class="citation" data-cites="Ibm_2024_lr">(see <a href="#ref-Ibm_2024_lr" role="doc-biblioref">Ibm 2024b</a>)</span>.</p>
 </section>
 <section id="decision-tree-breaking-it-down-into-steps" class="level4">
 <h4 class="anchored" data-anchor-id="decision-tree-breaking-it-down-into-steps">2. Decision Tree: Breaking It Down into Steps</h4>
@@ -218,6 +238,7 @@ A <strong>node</strong> represents a decision based on a feature and a <strong>l
 <figcaption>Decision Tree Flowchart</figcaption>
 </figure>
 </div>
+<p>For more information, <span class="citation" data-cites="Ibm_2024b_dt">(see <a href="#ref-Ibm_2024b_dt" role="doc-biblioref">Ibm 2024a</a>)</span></p>
 </section>
 </section>
 <section id="comparison-of-logistic-regression-and-decision-tree" class="level2">
@@ -282,12 +303,20 @@ Decision Trees are prone to overfitting because they can become overly complex, 
 <p>Moreover, with the rise of deep learning and other advanced algorithms, we may see an expansion of machine learning applications in areas like medical imaging, drug discovery, and personalized treatment plans. Ethical considerations and transparency will remain key as these technologies evolve, ensuring they enhance, rather than replace, human decision-making in clinical practice. Continuous research and development will help refine these models, making them more accurate, accessible, and beneficial for improving patient outcomes across various healthcare domains.</p>
 </section>
 <section id="references" class="level1">
-<h1>References</h1>
+
+
 
 
 </section>
 
-</main> <!-- /main -->
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-Ibm_2024b_dt" class="csl-entry" role="listitem">
+Ibm. 2024a. <span>“What Is a Decision Tree?”</span> <em>IBM</em>. <a href="https://www.ibm.com/think/topics/decision-trees">https://www.ibm.com/think/topics/decision-trees</a>.
+</div>
+<div id="ref-Ibm_2024_lr" class="csl-entry" role="listitem">
+———. 2024b. <span>“What Is Logistic Regression?”</span> <em>IBM</em>. <a href="https://www.ibm.com/think/topics/logistic-regression">https://www.ibm.com/think/topics/logistic-regression</a>.
+</div>
+</div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

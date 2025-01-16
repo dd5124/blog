@@ -3,6 +3,7 @@ title: "Comparing Classification Models in Health Context"
 author: "Yeji Sohn"
 date: "2025-01-15"
 categories: [analysis]
+bibliography: references.bib
 ---
 
 Recent developments in machine learning and artificial intelligence have introduced breakthrough methods for predicting diagnoses, health emergencies, and more. Despite some skepticism, the adoption of these technologies is steadily increasing. Healthcare is an industry constantly evolving with new technologies and treatments, making it challenging for professionals to keep up. 
@@ -34,9 +35,10 @@ $X_1, X_2, \dots, X_k$ are the independent variables (like age or cholesterol le
 The $\beta$ values are coefficients determined using a method called **maximum likelihood estimation (MLE)**.
 
 A **probability less than 0.5** predicts the outcome as 0 (False), 
-while a **probability greater than 0.5** predicts it as 1 (True).  
-For example, if $\beta_1 = 0.8$, it means that for every 1-unit increase in $X_1$, 
+while a **probability greater than 0.5** predicts it as 1 (True).  For example, if $\beta_1 = 0.8$, it means that for every 1-unit increase in $X_1$, 
 the odds of success increase by $e^{0.8} \approx 2.22$—a 122% increase!
+
+For more information, [see @Ibm_2024_lr].
 
 #### 2. Decision Tree: Breaking It Down into Steps
 
@@ -57,6 +59,8 @@ A Decision Tree might first split by whether patient is more than 50 years old,
 then by whether their blood pressure is high. Each split narrows down the data to more specific groups.
 
 ![Decision Tree Flowchart](tree_flowchart.png)
+
+For more information, [see @Ibm_2024b_dt]
 
 ## Comparison of Logistic Regression and Decision Tree
 
