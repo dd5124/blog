@@ -188,11 +188,14 @@ Markdown(results.to_markdown(index = False))
 * **Interpretation:** Like Group 6, this group is less price-sensitive and may represent another target for premium pricing or tailored offers.
 
 **Recommendation:**
+
 1. High Elasticity Groups (2 and 3):
+
    - These groups are more price-sensitive due to lower income, engagement, or both.
    - Price reductions or promotions may drive significant demand increases.
 
 2. Low Elasticity Groups (6 and 5):
+
    - These groups show low sensitivity to price changes, likely due to higher income and inherent demand.
    - They are suitable candidates for price increases or premium-tier products.
 
@@ -213,8 +216,9 @@ Market segmentation using regression trees can be applied to a variety of indust
 In this blog post, we demonstrated how to segment a market using regression trees in R. By using regression trees for segmentation, you can uncover actionable insights to drive strategy and decision-making. Whether refining pricing strategies or identifying customer needs, these tools offer a robust way to make the most of your data.
 
 Key takeaways include:
-- **Market segmentation** is essential for understanding and targeting specific customer groups.
-- **Regression trees** are an effective tool for predicting continuous outcomes based on various independent variables.
+
+- Market segmentation is essential for understanding and targeting specific customer groups.
+- Regression trees are an effective tool for predicting continuous outcomes based on various independent variables.
 - By segmenting stores based on their demographics, retailers can optimize pricing and improve sales strategies.
 
 If you're interested in diving deeper into regression trees or market segmentation, try applying these techniques to your own datasets and explore how different groups behave differently in your industry.

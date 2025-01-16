@@ -211,25 +211,25 @@ window.Quarto = {
 <section id="logistic-regression-predicting-yes-or-no" class="level4">
 <h4 class="anchored" data-anchor-id="logistic-regression-predicting-yes-or-no">1. Logistic Regression: Predicting Yes or No</h4>
 <p><strong>Definition</strong></p>
-<p>Logistic Regression is a supervised learning model designed to solve <strong>binary classification problems</strong>—situations where the answer is a clear “yes” or “no.” For example, it can predict whether a person has a heart disease (True/1) or not (False/0).</p>
+<p>Logistic Regression is a supervised learning model designed to solve binary classification problems—situations where the answer is a clear “yes” or “no.” For example, it can predict whether a person has a heart disease (True/1) or not (False/0).</p>
 <p><strong>How It Works</strong></p>
-<p>The outcome of logistic regression is a <strong>probability</strong>, which always falls between 0 and 1. To get there, it uses <strong>log-odds</strong> <span class="math inline">\(\text{logit}(p_i)\)</span> and applies a <strong>logistic function</strong>:<br>
+<p>The outcome of logistic regression is a probability, which always falls between 0 and 1. To get there, it uses log-odds <span class="math inline">\(\text{logit}(p_i)\)</span> and applies a logistic function:<br>
 <span class="math display">\[
   \text{logit}(p_i) = \ln\left(\frac{p_i}{1 - p_i}\right) = \beta_0 + \beta_1 X_1 + \dots + \beta_k X_k
   \]</span></p>
 <p>Here, <span class="math inline">\(p_i\)</span> is the probability of success (e.g., having heart disease), and <span class="math inline">\(1-p_i\)</span> is the probability of failure.<br>
 <span class="math inline">\(X_1, X_2, \dots, X_k\)</span> are the independent variables (like age or cholesterol level).<br>
-The <span class="math inline">\(\beta\)</span> values are coefficients determined using a method called <strong>maximum likelihood estimation (MLE)</strong>.</p>
-<p>A <strong>probability less than 0.5</strong> predicts the outcome as 0 (False), while a <strong>probability greater than 0.5</strong> predicts it as 1 (True). For example, if <span class="math inline">\(\beta_1 = 0.8\)</span>, it means that for every 1-unit increase in <span class="math inline">\(X_1\)</span>, the odds of success increase by <span class="math inline">\(e^{0.8} \approx 2.22\)</span>—a 122% increase!</p>
+The <span class="math inline">\(\beta\)</span> values are coefficients determined using a method called maximum likelihood estimation (MLE).</p>
+<p>A probability less than 0.5 predicts the outcome as 0 (False), while a probability greater than 0.5 predicts it as 1 (True). For example, if <span class="math inline">\(\beta_1 = 0.8\)</span>, it means that for every 1-unit increase in <span class="math inline">\(X_1\)</span>, the odds of success increase by <span class="math inline">\(e^{0.8} \approx 2.22\)</span>—a 122% increase!</p>
 <p>For more information, <span class="citation" data-cites="Ibm_2024_lr">(see <a href="#ref-Ibm_2024_lr" role="doc-biblioref">Ibm 2024b</a>)</span>.</p>
 </section>
 <section id="decision-tree-breaking-it-down-into-steps" class="level4">
 <h4 class="anchored" data-anchor-id="decision-tree-breaking-it-down-into-steps">2. Decision Tree: Breaking It Down into Steps</h4>
 <p><strong>Definition</strong></p>
-<p>A Decision Tree is a versatile, <strong>non-parametric algorithm</strong> (no assumptions on data distributions or form) that can be used for both classification and regression. It uses a tree-like structure to make decisions, splitting data into branches based on conditions.</p>
+<p>A Decision Tree is a versatile, non-parametric algorithm (no assumptions on data distributions or form) that can be used for both classification and regression. It uses a tree-like structure to make decisions, splitting data into branches based if-else statements.</p>
 <p><strong>How It Works</strong><br>
-At each level of the tree, the algorithm chooses the <strong>best feature</strong> (like age or income) and splits the data to minimize impurity.<br>
-A <strong>node</strong> represents a decision based on a feature and a <strong>leaf</strong> contains the final prediction.</p>
+At each level of the tree, the algorithm chooses the best feature (like age or income) and splits the data to minimize impurity.<br>
+A node represents a decision based on a feature and a leaf contains the final prediction.</p>
 <p>The process continues recursively until all data points are classified, or a stopping rule (like a minimum node size) is met.</p>
 <p>For example, imagine classifying patients based on age and resting blood pressure. A Decision Tree might first split by whether patient is more than 50 years old, then by whether their blood pressure is high. Each split narrows down the data to more specific groups.</p>
 <div class="quarto-figure quarto-figure-center">
@@ -243,7 +243,7 @@ A <strong>node</strong> represents a decision based on a feature and a <strong>l
 </section>
 <section id="comparison-of-logistic-regression-and-decision-tree" class="level2">
 <h2 class="anchored" data-anchor-id="comparison-of-logistic-regression-and-decision-tree">Comparison of Logistic Regression and Decision Tree</h2>
-<p>When deciding between <strong>Logistic Regression</strong> and <strong>Decision Trees</strong>, it’s important to consider factors like complexity, interpretability, data handling, and how well they generalize.</p>
+<p>When deciding between Logistic Regression and Decision Trees, it’s important to consider factors like complexity, interpretability, data handling, and how well they generalize.</p>
 <section id="model-complexity" class="level3">
 <h3 class="anchored" data-anchor-id="model-complexity">1. Model Complexity</h3>
 <ul>
@@ -276,7 +276,7 @@ Decision Trees thrive on flexibility. They don’t require data to follow specif
 <li><p><strong>Logistic Regression</strong>:<br>
 Logistic Regression tends to generalize well, which means it performs consistently on new, unseen data. This is because it’s a simpler model with fewer parameters, making it less likely to overfit.</p></li>
 <li><p><strong>Decision Tree</strong>:<br>
-Decision Trees are prone to overfitting because they can become overly complex, capturing even minor details (or noise) in the training data. However, methods like <strong>pruning</strong> (cutting back unnecessary branches) and <strong>cross-validation</strong> (testing on different subsets of data) can help mitigate this. Also, small changes in the data can result in a very different tree, highlighting their high variance.</p></li>
+Decision Trees are prone to overfitting because they can become overly complex, capturing even minor details (or noise) in the training data. However, methods like pruning (cutting back unnecessary branches) and cross-validation (testing on different subsets of data) can help mitigate this. Also, small changes in the data can result in a very different tree, highlighting their high variance.</p></li>
 </ul>
 </section>
 </section>
@@ -291,9 +291,11 @@ Decision Trees are prone to overfitting because they can become overly complex, 
 </section>
 <section id="practical-applications" class="level3">
 <h3 class="anchored" data-anchor-id="practical-applications">2. Practical Applications</h3>
-<p>Both logistic regression and decision trees have practical applications in clinical settings, but they offer different strengths and limitations when used in real-world healthcare. Logistic regression is often favored in settings where the relationship between features and outcomes is assumed to be linear. It is relatively easy to implement and interpret, which is particularly valuable in clinical environments where practitioners may need to quickly understand and trust model outputs. For example, logistic regression might be used in primary care to predict heart disease risk based on basic health metrics like age, blood pressure, and cholesterol levels. However, logistic regression can struggle with capturing more complex, non-linear relationships between features. Decision trees are particularly useful when clinicians want a model that can handle both numerical and categorical data and uncover non-linear relationships. They are highly interpretable and provide a clear flowchart that explains the decision process (e.g., “If age &gt; 60 and cholesterol &gt; 240, then high risk of heart disease”). This can be incredibly useful in a clinical setting where healthcare providers need to follow a transparent decision-making process. However, decision trees are prone to overfitting, meaning they may perform well on training data but less accurately on unseen data. They also tend to struggle with small data sets or those with lots of noise.</p>
+<p>Both logistic regression and decision trees have practical applications in clinical settings, but they offer different strengths and limitations when used in real-world healthcare.</p>
+<p>Logistic regression is often favored in settings where the relationship between features and outcomes is assumed to be linear. It is relatively easy to implement and interpret, which is particularly valuable in clinical environments where practitioners may need to quickly understand and trust model outputs. For example, logistic regression might be used in primary care to predict heart disease risk based on basic health metrics like age, blood pressure, and cholesterol levels. However, logistic regression can struggle with capturing more complex, non-linear relationships between features.</p>
+<p>Decision trees are particularly useful when clinicians want a model that can handle both numerical and categorical data and uncover non-linear relationships. They are highly interpretable and provide a clear flowchart that explains the decision process (e.g., “If age &gt; 60 and cholesterol &gt; 240, then high risk of heart disease”). This can be incredibly useful in a clinical setting where healthcare providers need to follow a transparent decision-making process. However, decision trees are prone to overfitting, meaning they may perform well on training data but less accurately on unseen data. They also tend to struggle with small data sets or those with lots of noise.</p>
 <p>Logistic regression offers the benefit of simplicity and ease of interpretation. Its limitations lie in its inability to model complex interactions between features, making it less effective in cases where the relationship between variables is non-linear. On the other hand, decision tree excel at modeling complex, non-linear relationships, making them highly flexible in predicting outcomes based on a mix of clinical features. However, they can be prone to overfitting and may require pruning or other adjustments to improve generalizability.</p>
-<p>In practice, the choice between logistic regression and decision trees often comes down to the specific needs of the clinical application—whether interpretability or model flexibility is more important—and the nature of the data at hand.</p>
+<p>In practice, the choice between logistic regression and decision trees often comes down to the specific needs of the clinical application (whether interpretability or model flexibility is more important), the nature of the data at hand, and test scores.</p>
 </section>
 </section>
 <section id="conclusion" class="level2">
