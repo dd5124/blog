@@ -14,7 +14,10 @@ In the world of data science, one of the most powerful tools for understanding c
 ![](image.png)
 
 Market/Customer segmentation a important tool for identifying "who" your target audience is, serving as a key component of your business model. 
-It divides a market into distinct customer groups with similar needs, interests, and priorities, allowing businesses to tailor marketing efforts and products. This process enhances resource allocation and customer satisfaction. For example, a retailer might segment by geography, income, or behavior. In this case, we'll use store demographics (age, income, ethnicity) to predict sales price differences with a regression tree model.
+It divides a market into distinct customer groups with similar needs, interests, and priorities, allowing businesses to tailor marketing efforts and products. This process enhances resource allocation and customer satisfaction. 
+For example, a retailer might segment by geography, income, or behavior. 
+
+For this exercise, we'll use user behavior and characteristics (avgerage hours, days visisted, income, etc..) to predict demand elasticities with a regression tree model.
 
 Customer segmentation in a business model offers several advantages:
 
@@ -126,7 +129,7 @@ reg_tree.fit(reg_tree_data.drop(columns='demand'), reg_tree_data['demand'])
 ```
 By fitting the model, we are able to identify the relationships between the various user characteristics and demand, and the tree automatically creates splits (segments) based on these variables.
 
-#### Step 4: Assigning Stores to Leaves
+#### Step 4: Assigning Users to Leaves
 
 Next, we assign each user to a regression tree leaf:
 
@@ -137,7 +140,7 @@ This step adds a new variable `leaf` to the dataset, which indicates the leaf (o
 
 #### Step 5: Interpreting the Results
 
-At this point, we have successfully segmented the users based on their characteristics. Each user is now assigned to a segment (leaf) that represents a group of stores with similar characteristics.
+At this point, we have successfully segmented the users based on their characteristics. Each user is now assigned to a segment (leaf) that represents a group of users with similar characteristics.
 
 To calculate price elasticities for each segment, do the following:
 ```python
@@ -181,30 +184,30 @@ Markdown(results.to_markdown(index = False))
 
 **Group 2:**
 
-* **Price Elasticity (-2.14):** Highly elastic, meaning demand is sensitive to price changes. A small price increase could significantly reduce demand.
+* **Price Elasticity (-2.14):** Highly elastic. The demand is sensitive to price changes. A small price increase could significantly reduce demand.
 * **Average Income (0.70):** Relatively low compared to other groups, suggesting higher price sensitivity (income effect).
 * **Average Days Visited (1.95):** Low platform engagement, possibly contributing to higher elasticity as these users might not be habitual buyers.
-* **Interpretation:** Price adjustments could significantly impact demand in this group, requiring careful consideration of pricing strategies.
+* **Interpretation:** Price adjustments could significantly impact demand in this group, making them ideal for sale offerings.
 
 **Group 3:**
 
-* **Price Elasticity (-1.28):** Moderately elastic, indicating that users are still responsive to price changes, but less so than Group 0.
-* **Average Income (0.70):** Similar to Group 2, maintaining moderate price sensitivity.
+* **Price Elasticity (-1.28):** Moderately elastic. Users are still responsive to price changes, but less so than Group 0.
+* **Average Income (0.70):** Similar to Group 2. Moderate price sensitivity.
 * **Average Days Visited (5.99):** Higher engagement than Group 0, which could reduce elasticity as these users are more invested in the platform.
 * **Interpretation:** This group may respond to price changes, but their higher engagement suggests potential for retention despite price increases.
 
 **Group 6:**
 
-* **Price Elasticity (-0.11):** Nearly inelastic, indicating demand is relatively insensitive to price changes.
+* **Price Elasticity (-0.11):** Nearly inelastic. The demand is relatively insensitive to price changes.
 * **Income (1.56):** Higher than the other groups, likely contributing to lower price sensitivity.
-* **Average Days Visited (6.01):** Highest engagement, which could reduce elasticity as these users are more invested in the platform. highly.
+* **Average Days Visited (6.01):** Highest engagement. This could reduce elasticity as these users are more invested in the platform. highly.
 * **Interpretation:** This group can tolerate higher prices without significant reductions in demand, making them ideal for premium offerings.
 
 **Group 5:**
 
-* **Price Elasticity (-0.12):** Nearly inelastic, similar to Group 6.
+* **Price Elasticity (-0.12):** Nearly inelastic. Similar to Group 6.
 * **Income (1.58):** Comparable to Group 6, supporting lower price sensitivity.
-* **Average Days Visited (2.01):** Despite low platform engagement, demand (19.59) remains high, indicating users in this group value the product highly.
+* **Average Days Visited (2.01):** Despite low platform engagement, demand (19.59) remains high, which could mean that users in this group value the product highly.
 * **Interpretation:** Like Group 6, this group is less price-sensitive and may represent another target for premium pricing or tailored offers.
 
 **Recommendation:**
