@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Yeji Sohn">
-<meta name="dcterms.date" content="2025-01-13">
+<meta name="dcterms.date" content="2025-01-18">
 
 <title>Market Segmentation with Regression Trees in Python: A Step-by-Step Guide – Blog</title>
 <style>
@@ -149,12 +149,7 @@ div.csl-indent {
 <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/"> <i class="bi bi-github" role="img">
-</i> 
-<span class="menu-text"></span></a>
-  </li>  
-  <li class="nav-item compact">
-    <a class="nav-link" href="https://twitter.com"> <i class="bi bi-twitter" role="img">
+    <a class="nav-link" href="https://github.com/dd5124"> <i class="bi bi-github" role="img">
 </i> 
 <span class="menu-text"></span></a>
   </li>  
@@ -190,7 +185,7 @@ div.csl-indent {
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">January 13, 2025</p>
+        <p class="date">January 18, 2025</p>
       </div>
     </div>
     
@@ -209,11 +204,12 @@ div.csl-indent {
 
 
 
-<p>In the world of data science, one of the most powerful tools for understanding customer behavior and improving marketing strategies is market segmentation. By dividing a market into subgroups with shared characteristics, companies can optimize pricing, enhance customer satisfaction, and allocate resources effectively. In this post, we explore how to use regression trees in R for market segmentation, providing a step-by-step guide for practical application.</p>
+<p>In the world of data science, one of the most powerful tools for understanding customer behavior and improving marketing strategies is market segmentation. By dividing a market into subgroups with shared characteristics, companies can optimize pricing, enhance customer satisfaction, and allocate resources effectively. In this post, we explore how to use regression trees in Python for market segmentation, providing a step-by-step guide for practical application.</p>
 <section id="what-is-market-segmentation" class="level3">
 <h3 class="anchored" data-anchor-id="what-is-market-segmentation">What is Market Segmentation?</h3>
 <p><img src="image.png" class="img-fluid"></p>
-<p>Market/Customer segmentation a important tool for identifying “who” your target audience is, serving as a key component of your business model. It divides a market into distinct customer groups with similar needs, interests, and priorities, allowing businesses to tailor marketing efforts and products. This process enhances resource allocation and customer satisfaction. For example, a retailer might segment by geography, income, or behavior. In this case, we’ll use store demographics (age, income, ethnicity) to predict sales price differences with a regression tree model.</p>
+<p>Market/Customer segmentation a important tool for identifying “who” your target audience is, serving as a key component of your business model. It divides a market into distinct customer groups with similar needs, interests, and priorities, allowing businesses to tailor marketing efforts and products. This process enhances resource allocation and customer satisfaction. For example, a retailer might segment by geography, income, or behavior.</p>
+<p>For this exercise, we’ll use user behavior and characteristics (avgerage hours, days visisted, income, etc..) to predict demand elasticities with a regression tree model.</p>
 <p>Customer segmentation in a business model offers several advantages:</p>
 <section id="effective-marketing-strategy" class="level4">
 <h4 class="anchored" data-anchor-id="effective-marketing-strategy">1. Effective Marketing Strategy</h4>
@@ -230,6 +226,7 @@ div.csl-indent {
 <section id="improved-conversion-metrics" class="level4">
 <h4 class="anchored" data-anchor-id="improved-conversion-metrics">4. Improved Conversion Metrics</h4>
 <p>Segmentation boosts conversion rates by enabling personalized strategies. It also helps identify abandoned carts and encourages checkout or purchase.</p>
+<p><span class="citation" data-cites="Takyar_2024">(<a href="#ref-Takyar_2024" role="doc-biblioref">Takyar 2024</a>)</span></p>
 </section>
 </section>
 <section id="key-concepts-to-understand" class="level3">
@@ -245,7 +242,7 @@ div.csl-indent {
 </section>
 <section id="sample-dataset" class="level3">
 <h3 class="anchored" data-anchor-id="sample-dataset">Sample Dataset</h3>
-<p>The dataset is from: <a href="https://www.microsoft.com/en-us/research/group/alice/">Alice Project</a></p>
+<p>The dataset is from <span class="citation" data-cites="econml">(<a href="#ref-econml" role="doc-biblioref">Keith Battocchi 2019</a>)</span> developed by, <a href="https://www.microsoft.com/en-us/research/group/alice/">Alice Project</a>.</p>
 <p>There are around 10,000 observations and 9 continuous and categorical variables representing user’s behaviors and characteristics.</p>
 <p>Description of varaibales are as following:</p>
 <table class="caption-top table">
@@ -309,7 +306,6 @@ div.csl-indent {
 </section>
 <section id="step-by-step-guide" class="level3">
 <h3 class="anchored" data-anchor-id="step-by-step-guide">Step-by-Step Guide</h3>
-<p><strong>This guide is adapted from <span class="citation" data-cites="econml">(<a href="#ref-econml" role="doc-biblioref">Keith Battocchi 2019</a>)</span></strong></p>
 <section id="step-1-loading-and-preparing-the-data" class="level4">
 <h4 class="anchored" data-anchor-id="step-1-loading-and-preparing-the-data">Step 1: Loading and Preparing the Data</h4>
 <p>First, we load the libraries and data, and perform some basic data cleaning.</p>
@@ -355,15 +351,15 @@ div.csl-indent {
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>reg_tree.fit(reg_tree_data.drop(columns<span class="op">=</span><span class="st">'demand'</span>), reg_tree_data[<span class="st">'demand'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>By fitting the model, we are able to identify the relationships between the various user characteristics and demand, and the tree automatically creates splits (segments) based on these variables.</p>
 </section>
-<section id="step-4-assigning-stores-to-leaves" class="level4">
-<h4 class="anchored" data-anchor-id="step-4-assigning-stores-to-leaves">Step 4: Assigning Stores to Leaves</h4>
+<section id="step-4-assigning-users-to-leaves" class="level4">
+<h4 class="anchored" data-anchor-id="step-4-assigning-users-to-leaves">Step 4: Assigning Users to Leaves</h4>
 <p>Next, we assign each user to a regression tree leaf:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>pricing_df[<span class="st">'leaf'</span>] <span class="op">=</span> reg_tree.<span class="bu">apply</span>(reg_tree_data.drop(columns<span class="op">=</span><span class="st">'demand'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>This step adds a new variable <code>leaf</code> to the dataset, which indicates the leaf (or segment) that each user belongs to.</p>
 </section>
 <section id="step-5-interpreting-the-results" class="level4">
 <h4 class="anchored" data-anchor-id="step-5-interpreting-the-results">Step 5: Interpreting the Results</h4>
-<p>At this point, we have successfully segmented the users based on their characteristics. Each user is now assigned to a segment (leaf) that represents a group of stores with similar characteristics.</p>
+<p>At this point, we have successfully segmented the users based on their characteristics. Each user is now assigned to a segment (leaf) that represents a group of users with similar characteristics.</p>
 <p>To calculate price elasticities for each segment, do the following:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>pricing_df[<span class="st">'log_price'</span>] <span class="op">=</span> np.log(pricing_df[<span class="st">'price'</span>])</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>pricing_df[<span class="st">'log_q'</span>] <span class="op">=</span> np.log(pricing_df[<span class="st">'demand'</span>])</span>
@@ -394,7 +390,7 @@ div.csl-indent {
 Table&nbsp;1: Average features and elasticity by segmentation
 </figcaption>
 <div aria-describedby="tbl-results-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="5">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="1">
 <table class="do-not-create-environment cell caption-top table table-sm table-striped small">
 <colgroup>
 <col style="width: 4%">
@@ -516,30 +512,30 @@ Table&nbsp;1: Average features and elasticity by segmentation
 </div>
 <p><strong>Group 2:</strong></p>
 <ul>
-<li><strong>Price Elasticity (-2.14):</strong> Highly elastic, meaning demand is sensitive to price changes. A small price increase could significantly reduce demand.</li>
+<li><strong>Price Elasticity (-2.14):</strong> Highly elastic. The demand is sensitive to price changes. A small price increase could significantly reduce demand.</li>
 <li><strong>Average Income (0.70):</strong> Relatively low compared to other groups, suggesting higher price sensitivity (income effect).</li>
 <li><strong>Average Days Visited (1.95):</strong> Low platform engagement, possibly contributing to higher elasticity as these users might not be habitual buyers.</li>
-<li><strong>Interpretation:</strong> Price adjustments could significantly impact demand in this group, requiring careful consideration of pricing strategies.</li>
+<li><strong>Interpretation:</strong> Price adjustments could significantly impact demand in this group, making them ideal for sale offerings.</li>
 </ul>
 <p><strong>Group 3:</strong></p>
 <ul>
-<li><strong>Price Elasticity (-1.28):</strong> Moderately elastic, indicating that users are still responsive to price changes, but less so than Group 0.</li>
-<li><strong>Average Income (0.70):</strong> Similar to Group 2, maintaining moderate price sensitivity.</li>
+<li><strong>Price Elasticity (-1.28):</strong> Moderately elastic. Users are still responsive to price changes, but less so than Group 0.</li>
+<li><strong>Average Income (0.70):</strong> Similar to Group 2. Moderate price sensitivity.</li>
 <li><strong>Average Days Visited (5.99):</strong> Higher engagement than Group 0, which could reduce elasticity as these users are more invested in the platform.</li>
 <li><strong>Interpretation:</strong> This group may respond to price changes, but their higher engagement suggests potential for retention despite price increases.</li>
 </ul>
 <p><strong>Group 6:</strong></p>
 <ul>
-<li><strong>Price Elasticity (-0.11):</strong> Nearly inelastic, indicating demand is relatively insensitive to price changes.</li>
+<li><strong>Price Elasticity (-0.11):</strong> Nearly inelastic. The demand is relatively insensitive to price changes.</li>
 <li><strong>Income (1.56):</strong> Higher than the other groups, likely contributing to lower price sensitivity.</li>
-<li><strong>Average Days Visited (6.01):</strong> Highest engagement, which could reduce elasticity as these users are more invested in the platform. highly.</li>
+<li><strong>Average Days Visited (6.01):</strong> Highest engagement. This could reduce elasticity as these users are more invested in the platform. highly.</li>
 <li><strong>Interpretation:</strong> This group can tolerate higher prices without significant reductions in demand, making them ideal for premium offerings.</li>
 </ul>
 <p><strong>Group 5:</strong></p>
 <ul>
-<li><strong>Price Elasticity (-0.12):</strong> Nearly inelastic, similar to Group 6.</li>
+<li><strong>Price Elasticity (-0.12):</strong> Nearly inelastic. Similar to Group 6.</li>
 <li><strong>Income (1.58):</strong> Comparable to Group 6, supporting lower price sensitivity.</li>
-<li><strong>Average Days Visited (2.01):</strong> Despite low platform engagement, demand (19.59) remains high, indicating users in this group value the product highly.</li>
+<li><strong>Average Days Visited (2.01):</strong> Despite low platform engagement, demand (19.59) remains high, which could mean that users in this group value the product highly.</li>
 <li><strong>Interpretation:</strong> Like Group 6, this group is less price-sensitive and may represent another target for premium pricing or tailored offers.</li>
 </ul>
 <p><strong>Recommendation:</strong></p>
@@ -570,15 +566,8 @@ Table&nbsp;1: Average features and elasticity by segmentation
 </section>
 <section id="conclusion" class="level3">
 <h3 class="anchored" data-anchor-id="conclusion">Conclusion</h3>
-<p>In this blog post, we demonstrated how to segment a market using regression trees in R. By using regression trees for segmentation, you can uncover actionable insights to drive strategy and decision-making. Whether refining pricing strategies or identifying customer needs, these tools offer a robust way to make the most of your data.</p>
-<p>Key takeaways include:</p>
-<ul>
-<li>Market segmentation is essential for understanding and targeting specific customer groups.</li>
-<li>Regression trees are an effective tool for predicting continuous outcomes based on various independent variables.</li>
-<li>By segmenting stores based on their demographics, retailers can optimize pricing and improve sales strategies.</li>
-</ul>
+<p>In this blog post, we demonstrated how to segment a market using regression trees in Python. By using regression trees for segmentation, you can uncover actionable insights to drive strategy and decision-making. Whether refining pricing strategies or identifying customer needs, these tools offer a robust way to make the most of your data.</p>
 <p>If you’re interested in diving deeper into regression trees or market segmentation, try applying these techniques to your own datasets and explore how different groups behave differently in your industry.</p>
-<p>For segmentation using different classification models, refer to <span class="citation" data-cites="Franciscojarceo">(<a href="#ref-Franciscojarceo" role="doc-biblioref">Franciscojarceo, n.d.</a>)</span>.</p>
 <hr>
 </section>
 <section id="references" class="level1">
@@ -589,11 +578,11 @@ Table&nbsp;1: Average features and elasticity by segmentation
 </section>
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
-<div id="ref-Franciscojarceo" class="csl-entry" role="listitem">
-Franciscojarceo. n.d. <span>“Customer Segmentation Using Data Science.”</span> <em>Francisco’s Random Thoughts</em>. <a href="https://franciscojavierarceo.github.io/post/customer-segmentation-data-science">https://franciscojavierarceo.github.io/post/customer-segmentation-data-science</a>.
-</div>
 <div id="ref-econml" class="csl-entry" role="listitem">
 Keith Battocchi, Maggie Hei, Eleanor Dillon. 2019. <span>“<span>EconML</span>: <span class="nocase">A Python Package for ML-Based Heterogeneous Treatment Effects Estimation</span>.”</span> https://github.com/py-why/EconML.
+</div>
+<div id="ref-Takyar_2024" class="csl-entry" role="listitem">
+Takyar, Akash. 2024. <span>“How to Build a Machine Learning Model for Customer Segmentation?”</span> <em>LeewayHertz</em>. <a href="https://www.leewayhertz.com/build-a-machine-learning-model-for-customer-segmentation/#How-to-build-a-machine-learning-model-for-customer-segmentation">https://www.leewayhertz.com/build-a-machine-learning-model-for-customer-segmentation/#How-to-build-a-machine-learning-model-for-customer-segmentation</a>.
 </div>
 </div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
