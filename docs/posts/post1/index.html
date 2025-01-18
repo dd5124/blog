@@ -212,18 +212,40 @@ div.csl-indent {
 <p>In the world of data science, one of the most powerful tools for understanding customer behavior and improving marketing strategies is market segmentation. By dividing a market into subgroups with shared characteristics, companies can optimize pricing, enhance customer satisfaction, and allocate resources effectively. In this post, we explore how to use regression trees in R for market segmentation, providing a step-by-step guide for practical application.</p>
 <section id="what-is-market-segmentation" class="level3">
 <h3 class="anchored" data-anchor-id="what-is-market-segmentation">What is Market Segmentation?</h3>
-<p>Market segmentation divides a market into distinct customer groups with similar needs, interests, and priorities, allowing businesses to tailor marketing efforts and products. This process enhances resource allocation and customer satisfaction. For example, a retailer might segment by geography, income, or behavior. In this case, we’ll use store demographics (age, income, ethnicity) to predict sales price differences with a regression tree model.</p>
+<p><img src="image.png" class="img-fluid"></p>
+<p>Market/Customer segmentation a important tool for identifying “who” your target audience is, serving as a key component of your business model. It divides a market into distinct customer groups with similar needs, interests, and priorities, allowing businesses to tailor marketing efforts and products. This process enhances resource allocation and customer satisfaction. For example, a retailer might segment by geography, income, or behavior. In this case, we’ll use store demographics (age, income, ethnicity) to predict sales price differences with a regression tree model.</p>
+<p>Customer segmentation in a business model offers several advantages:</p>
+<section id="effective-marketing-strategy" class="level4">
+<h4 class="anchored" data-anchor-id="effective-marketing-strategy">1. Effective Marketing Strategy</h4>
+<p>Segmentation deepens understanding of customers, allowing businesses to prioritize marketing channels and target specific customer groups with tailored messages and creatives.</p>
+</section>
+<section id="predicting-customer-behavior" class="level4">
+<h4 class="anchored" data-anchor-id="predicting-customer-behavior">2. Predicting Customer Behavior</h4>
+<p>By classifying customers based on behavior, segmentation helps predict future actions, enabling more proactive strategies.</p>
+</section>
+<section id="personalized-customer-experience" class="level4">
+<h4 class="anchored" data-anchor-id="personalized-customer-experience">3. Personalized Customer Experience</h4>
+<p>Segmentation allows businesses to offer services tailored to individual customer needs based on their data and create targeted programs, content, and incentives to reward customers and maintain their satisfaction and engagement.</p>
+</section>
+<section id="improved-conversion-metrics" class="level4">
+<h4 class="anchored" data-anchor-id="improved-conversion-metrics">4. Improved Conversion Metrics</h4>
+<p>Segmentation boosts conversion rates by enabling personalized strategies. It also helps identify abandoned carts and encourages checkout or purchase.</p>
+</section>
 </section>
 <section id="key-concepts-to-understand" class="level3">
 <h3 class="anchored" data-anchor-id="key-concepts-to-understand">Key Concepts to Understand</h3>
-<ol type="1">
-<li><p><strong>Regression Trees</strong>: A machine learning tool that predicts continuous outcomes by splitting data based on input features.</p></li>
-<li><p><strong>CP Value</strong>: Complexity Parameter decides how deep the decision tree will be grown into. If any split does not increase the overall R2 of the model by at least cp, the tree does not split said branch any further</p></li>
-</ol>
+<section id="regression-trees" class="level4">
+<h4 class="anchored" data-anchor-id="regression-trees">1. Regression Trees</h4>
+<p>A machine learning tool that predicts continuous outcomes by splitting data based on input features.</p>
+</section>
+<section id="cp-value" class="level4">
+<h4 class="anchored" data-anchor-id="cp-value">2. CP Value</h4>
+<p>Complexity Parameter decides how deep the decision tree will be grown into. If any split does not increase the overall R2 of the model by at least cp, the tree does not split said branch any further</p>
+</section>
 </section>
 <section id="sample-dataset" class="level3">
 <h3 class="anchored" data-anchor-id="sample-dataset">Sample Dataset</h3>
-<p>dataset is from: <a href="https://www.microsoft.com/en-us/research/group/alice/">Alice Project</a></p>
+<p>The dataset is from: <a href="https://www.microsoft.com/en-us/research/group/alice/">Alice Project</a></p>
 <p>There are around 10,000 observations and 9 continuous and categorical variables representing user’s behaviors and characteristics.</p>
 <p>Description of varaibales are as following:</p>
 <table class="caption-top table">
@@ -320,19 +342,9 @@ div.csl-indent {
 <span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co"># exclude variable of intersts for segmentation</span></span>
 <span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>reg_tree_data <span class="op">=</span> pricing_df.drop(columns<span class="op">=</span>[<span class="st">'price'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>show_tree(<span class="dv">5</span>, reg_tree_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="../../results/img/tree_cp5.png" class="img-fluid figure-img"></p>
-<figcaption>Tree5</figcaption>
-</figure>
-</div>
+<p><img src="../../results/img/tree_cp5.png" class="img-fluid"></p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>show_tree(<span class="dv">1</span>, reg_tree_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="../../results/img/tree_cp1.png" class="img-fluid figure-img"></p>
-<figcaption>Tree1</figcaption>
-</figure>
-</div>
+<p><img src="../../results/img/tree_cp1.png" class="img-fluid"></p>
 <p>We want 4 segments, so we will proceed with cp value of 1.</p>
 </section>
 <section id="step-3-building-the-regression-tree" class="level4">
@@ -376,19 +388,13 @@ div.csl-indent {
 <span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>pd.DataFrame(data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Both price and demand are transformed by log. This allows the coefficients to represent elasticity (the percentage change in demand for a percentage change in price).</p>
 <div class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> Markdown</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tabulate <span class="im">import</span> tabulate</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> pd.read_csv(<span class="st">"../../results/tbl/elasticity.csv"</span>)</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>Markdown(results.to_markdown(index <span class="op">=</span> <span class="va">False</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div id="tbl-results" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="1">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-results-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Table&nbsp;1: Average features and elasticity by segmentation
 </figcaption>
 <div aria-describedby="tbl-results-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="3">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="5">
 <table class="do-not-create-environment cell caption-top table table-sm table-striped small">
 <colgroup>
 <col style="width: 4%">
@@ -549,6 +555,7 @@ Table&nbsp;1: Average features and elasticity by segmentation
 <li>They are suitable candidates for price increases or premium-tier products.</li>
 </ul></li>
 </ol>
+<p><img src="elasticity.PNG" class="img-fluid"></p>
 <p>By understanding these nuances, pricing and marketing strategies can be tailored to maximize revenue while maintaining user satisfaction.</p>
 </section>
 </section>
@@ -571,7 +578,7 @@ Table&nbsp;1: Average features and elasticity by segmentation
 <li>By segmenting stores based on their demographics, retailers can optimize pricing and improve sales strategies.</li>
 </ul>
 <p>If you’re interested in diving deeper into regression trees or market segmentation, try applying these techniques to your own datasets and explore how different groups behave differently in your industry.</p>
-<p>For segmentation using different classification models, refer to <span class="citation" data-cites="Franciscojarceo">(<a href="#ref-Franciscojarceo" role="doc-biblioref">Franciscojarceo, n.d.</a>)</span>.</p>
+<p>For segmentation using different classification models, refer to <span class="citation" data-cites="Franciscojarceo">(<a href="#ref-Franciscojarceo" role="doc-biblioref"><strong>Franciscojarceo?</strong></a>)</span>.</p>
 <hr>
 </section>
 <section id="references" class="level1">
@@ -582,9 +589,6 @@ Table&nbsp;1: Average features and elasticity by segmentation
 </section>
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
-<div id="ref-Franciscojarceo" class="csl-entry" role="listitem">
-Franciscojarceo. n.d. <span>“Customer Segmentation Using Data Science.”</span> <em>Francisco’s Random Thoughts</em>. <a href="https://franciscojavierarceo.github.io/post/customer-segmentation-data-science">https://franciscojavierarceo.github.io/post/customer-segmentation-data-science</a>.
-</div>
 <div id="ref-econml" class="csl-entry" role="listitem">
 Keith Battocchi, Maggie Hei, Eleanor Dillon. 2019. <span>“<span>EconML</span>: <span class="nocase">A Python Package for ML-Based Heterogeneous Treatment Effects Estimation</span>.”</span> https://github.com/py-why/EconML.
 </div>

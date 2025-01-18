@@ -1,9 +1,9 @@
 ---
 title: "Market Segmentation with Regression Trees in Python: A Step-by-Step Guide"
 author: "Yeji Sohn"
-date: "2025-01-13"
+date: "2025-01-18"
 categories: [code, analysis]
-image: "image.jpg"
+image: "image.png"
 bibliography: references.bib
 ---
 
@@ -11,17 +11,38 @@ In the world of data science, one of the most powerful tools for understanding c
 
 ### What is Market Segmentation?
 
-Market segmentation divides a market into distinct customer groups with similar needs, interests, and priorities, allowing businesses to tailor marketing efforts and products. This process enhances resource allocation and customer satisfaction. For example, a retailer might segment by geography, income, or behavior. In this case, we'll use store demographics (age, income, ethnicity) to predict sales price differences with a regression tree model.
+![](image.png)
+
+Market/Customer segmentation a important tool for identifying "who" your target audience is, serving as a key component of your business model. 
+It divides a market into distinct customer groups with similar needs, interests, and priorities, allowing businesses to tailor marketing efforts and products. This process enhances resource allocation and customer satisfaction. For example, a retailer might segment by geography, income, or behavior. In this case, we'll use store demographics (age, income, ethnicity) to predict sales price differences with a regression tree model.
+
+Customer segmentation in a business model offers several advantages:
+
+#### 1. Effective Marketing Strategy 
+Segmentation deepens understanding of customers, allowing businesses to prioritize marketing channels and target specific customer groups with tailored messages and creatives.
+   
+#### 2. Predicting Customer Behavior
+By classifying customers based on behavior, segmentation helps predict future actions, enabling more proactive strategies.
+
+#### 3. Personalized Customer Experience
+Segmentation allows businesses to offer services tailored to individual customer needs based on their data and create targeted programs, content, and incentives to reward customers and maintain their satisfaction and engagement.
+
+#### 4. Improved Conversion Metrics
+Segmentation boosts conversion rates by enabling personalized strategies. It also helps identify abandoned carts and encourages checkout or purchase.
+
+[@Takyar_2024]
 
 ### Key Concepts to Understand
 
-1. **Regression Trees**: A machine learning tool that predicts continuous outcomes by splitting data based on input features.
+#### 1. Regression Trees
+A machine learning tool that predicts continuous outcomes by splitting data based on input features.
 
-2. **CP Value**: Complexity Parameter decides how deep the decision tree will be grown into. If any split does not increase the overall R2 of the model by at least cp, the tree does not split said branch any further
+#### 2. CP Value
+Complexity Parameter decides how deep the decision tree will be grown into. If any split does not increase the overall R2 of the model by at least cp, the tree does not split said branch any further
 
 ### Sample Dataset
 
-dataset is from: [Alice Project](https://www.microsoft.com/en-us/research/group/alice/)
+The dataset is from [@econml] developed by, [Alice Project](https://www.microsoft.com/en-us/research/group/alice/). 
 
 There are around 10,000 observations and 9 continuous and categorical variables representing user's behaviors and characteristics. 
 
@@ -42,8 +63,6 @@ Description of varaibales are as following:
 | **demand**       | songs user purchased during the discount season          |
 
 ### Step-by-Step Guide
-
-**This guide is adapted from [@econml]**
 
 #### Step 1: Loading and Preparing the Data
 
@@ -87,12 +106,12 @@ reg_tree_data = pricing_df.drop(columns=['price'])
 ```python
 show_tree(5, reg_tree_data)
 ```
-![Tree5](../../results/img/tree_cp5.png)
+![](../../results/img/tree_cp5.png)
 
 ```python
 show_tree(1, reg_tree_data)
 ```
-![Tree1](../../results/img/tree_cp1.png)
+![](../../results/img/tree_cp1.png)
 
 We want 4 segments, so we will proceed with cp value of 1.
 
@@ -149,6 +168,7 @@ Both price and demand are transformed by log.
 This allows the coefficients to represent elasticity (the percentage change in demand for a percentage change in price).
 
 ```{python}
+#| echo: false
 #| label: tbl-results
 #| tbl-cap: "Average features and elasticity by segmentation"
 import pandas as pd
@@ -199,6 +219,9 @@ Markdown(results.to_markdown(index = False))
    - These groups show low sensitivity to price changes, likely due to higher income and inherent demand.
    - They are suitable candidates for price increases or premium-tier products.
 
+
+![](elasticity.PNG)
+
 By understanding these nuances, pricing and marketing strategies can be tailored to maximize revenue while maintaining user satisfaction.
 
 ### Real-World Applications
@@ -222,8 +245,6 @@ Key takeaways include:
 - By segmenting stores based on their demographics, retailers can optimize pricing and improve sales strategies.
 
 If you're interested in diving deeper into regression trees or market segmentation, try applying these techniques to your own datasets and explore how different groups behave differently in your industry.
-
-For segmentation using different classification models, refer to [@Franciscojarceo].
 
 ---
 # References
